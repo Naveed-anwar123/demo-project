@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
-
+use App\Http\Controllers\Auth\Cookie;
 class RegisterController extends Controller
 {
     /*
@@ -38,7 +38,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware(['guest','referral']);
     }
 
     /**
@@ -64,11 +64,15 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+      $referred_by = \Cookie::get('referral');
         $user =  User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'affiliate_id'=> str_random(10),
+            'referral_by' => $referred_by
         ]);
+
         Mail::to($data['email'])->send(new WelcomeMail($user));
         return $user;
     }

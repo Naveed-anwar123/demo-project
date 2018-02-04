@@ -14,7 +14,17 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    You are logged in!<br />
+                    You referred {{$user->count()}} Users.
+                    <br />
+
+                    <div class='alert alert-success '>
+                      <h4>Your Private Affiliate id</h4>
+                      @if(Auth::user()->affiliate_id)
+                          {{url('/').'/register/?ref='.Auth::user()->affiliate_id}}
+                      @endif
+                    </div>
+
                 </div>
             </div>
         </div>
