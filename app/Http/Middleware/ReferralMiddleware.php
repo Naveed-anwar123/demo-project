@@ -21,7 +21,7 @@ class ReferralMiddleware
           }
           else{
             if( $request->query('ref') ) {
-                return redirect($request->fullUrl())->withCookie(cookie()->forever('referral', $request->query('ref')));
+                return redirect($request->fullUrl())->withCookie(cookie('referral', $request->query('ref')));
             }
           }
 

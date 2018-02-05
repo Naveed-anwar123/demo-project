@@ -73,7 +73,7 @@ class RegisterController extends Controller
             'referral_by' => $referred_by
         ]);
 
-        Mail::to($data['email'])->send(new WelcomeMail($user));
+      //  Mail::to($data['email'])->send(new WelcomeMail($user));
         return $user;
     }
 }
