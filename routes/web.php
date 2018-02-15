@@ -11,13 +11,21 @@
 |
 */
 
+use Illuminate\Support\Facades\Session;
+use Stripe\Stripe;
+use Illuminate\Http\Request;
 Route::get('/', function () {
     return view('welcome');
 });
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
+Route::get('changePassword', 'HomeController@changePassword');
+Route::post('changePasswordRequest', 'HomeController@changePasswordRequest');
+
+
+
 Route::resource('test', 'BearController');
 Route::resource('relationship', 'TestRelationshipController');
 Route::resource('query', 'QueryController');
@@ -68,3 +76,30 @@ Route::get('generate','PdfController@generate');
 
 Route::get('login/facebook', 'Auth\LoginController@redirectToProvider');
 Route::get('login/facebook/callback', 'Auth\LoginController@handleProviderCallback');
+
+Route::get('stripe',function(){
+    return view('stripe');
+});
+
+
+Route::post( '/paywith', function (Request $request) {
+    \Stripe\Stripe::setApiKey ( 'sk_test_k9ErqA5FdsAEg86ucsxpCdNC' );
+    try {
+      $response =   \Stripe\Charge::create ( array (
+            "amount" => 300 * 100,
+            "currency" => "usd",
+            "source" => $request->post ( 'stripeToken' ), // obtained with Stripe.js
+          //"customer" => 'tese@gmail.com'
+            "description" => "Test payment.",
+          //"customer" => 'naveedanwar152@gmail.com'
+        ) );
+        Session::flash ( 'success-message', 'Payment done successfully !' );
+        //dd($request->post ( 'stripeToken' ));
+
+        dd($response);
+        //return Redirect::back ();
+    } catch ( \Exception $e ) {
+        Session::flash ( 'fail-message', "Error! Please Try again." );
+        return Redirect::back ();
+    }
+} );

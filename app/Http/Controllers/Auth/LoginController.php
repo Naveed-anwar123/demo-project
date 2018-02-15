@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Laravel\Socialite\Facades\Socialite;
 use App\User;
@@ -98,4 +99,13 @@ class LoginController extends Controller
 
         // $user->token;
     }
+
+//    function authenticated(Request $request, $user)
+//    {
+//        $user->last_login = Carbon::now();
+//        $user->last_login_ip = $request->getClientIp();
+//        $user->save();
+//    }
+
+
 }

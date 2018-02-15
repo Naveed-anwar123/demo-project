@@ -7,6 +7,11 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Login</div>
 
+                @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
                 <div class="panel-body">
                     <form class="form-horizontal" method="POST" action="{{ route('login') }}">
                         {{ csrf_field() }}
@@ -24,6 +29,8 @@
                                 @endif
                             </div>
                         </div>
+
+
 
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                             <label for="password" class="col-md-4 control-label">Password</label>
@@ -58,7 +65,7 @@
                                 <a href="{{url('login/facebook')}}" class="btn btn-primary">
                                     facebook
                                 </a>
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
+                                <a class="btn btn-link" href="{{ url('changePassword') }}">
                                     Forgot Your Password?
                                 </a>
                             </div>
